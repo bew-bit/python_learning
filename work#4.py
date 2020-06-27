@@ -3,23 +3,32 @@
 #необходимо использовать формулу: (выработка в часах * ставка
 #в час) + премия. Для выполнения расчета для конкретных
 #значений необходимо запускать скрипт с параметрами.
+#def salary_calc():
+#    hours = float(input('1.\nВведите выработку в часах: '))
+#    rate = float(input('Введите почасовую ставку: '))
+#    bonus = float(input('Введите размер премии: '))
+#    salary = hours * rate + bonus
+#    return salary
+#print(f'Заработная плата составляет: {salary_calc()}\n')
+from sys import argv
 def salary_calc():
-    hours = float(input('1.\nВведите выработку в часах: '))
-    rate = float(input('Введите почасовую ставку: '))
-    bonus = float(input('Введите размер премии: '))
-    salary = hours * rate + bonus
-    return salary
-print(f'Заработная плата составляет: {salary_calc()}\n')
+    try:
+        hours, rate, bonus = map(int, argv[1:])
+        print(f'Заработная плата: {hours * rate + bonus}\n')
+    except ValueError:
+        print('Вы не ввели числа')
+salary_calc()
 #2. Представлен список чисел. Необходимо вывести элементы
 #исходного списка, значения которых больше предыдущего элемента.
 list_a = [300, 2, 12, 44, 1, 1, 4, 10, 7, 1, 78, 123, 55]
-list_b = []
-for i in range(len(list_a) - 1):
-    el_a = list_a[i]
-    i += 1
-    el_b = list_a[i]
-    if el_b > el_a:
-        list_b.append(el_a)
+list_b = [list_a[el] for el in range(1, len(list_a)) if list_a[el] > list_a[el-1]]
+#list_b = []
+#for i in range(len(list_a) - 1):
+#    el_a = list_a[i]
+#    i += 1
+#    el_b = list_a[i]
+#    if el_b > el_a:
+#        list_b.append(el_a)
 print(f'2.\n{list_b}\n')
 #3. Для чисел в пределах от 20 до 240 найти числа, кратные
 #20 или 21. Необходимо решить задание в одну строку.
@@ -42,3 +51,40 @@ list = list({el for el in range(100, 1001) if el % 2 == 0})
 def r_func(prev_el, el):
     return prev_el * el
 print(f'5.\n Произведение четных чисел от 100 до 1000:\n{reduce(r_func, list)}')
+#6. Реализовать два небольших скрипта:
+#а) итератор, генерирующий целые числа, начиная с указанного,
+#б) итератор, повторяющий элементы некоторого списка, определенного заранее.
+from itertools import count
+from itertools import cycle
+print('\n6.а)\n')
+def iter_a(var_1, var_2):
+    for el in count(var_1):
+        if el > var_2:
+            break
+        else:
+            print(el)
+iter_a(3, 10)
+print('\n6.б)\n')
+my_list = [117, 'TEXT', 15.08, None]
+def iter_b(var_3):
+    c = 0
+    for i in cycle(my_list):
+        if c > var_3:
+            break
+        print(i)
+        c += 1
+iter_b(10)
+#7. Реализовать генератор с помощью функции с ключевым словом
+#yield, создающим очередное значение. При вызове функции должен
+#создаваться объект-генератор. Функция должна вызываться следующим
+#образом: for el in fact(n). Функция отвечает за получение
+#факториала числа, а в цикле необходимо выводить только первые
+#n чисел, начиная с 1! и до n!.
+def fact(n):
+    step = 1
+    for i in range(1, n + 1):
+        step *= i
+        yield step
+n = int(input("\n7.\nВведите целое число, факториалы до которого требуется вычислить:\n"))
+for el in fact(n):
+    print(el)
