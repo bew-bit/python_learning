@@ -86,29 +86,35 @@ print(f'2.\n{coat}\n{suit}\n')
 #к клеткам и выполнять увеличение, уменьшение, умножение и обычное
 #(не целочисленное) деление клеток, соответственно. В методе деления
 #должно осуществляться округление значения до целого числа.
-#class Cell:
-#    def __init__(self, qty):
-#        self.qty = int(qty)
-#
-#    def __add__(self, other):
-#        return self.qty + other.qty
-#
-#    def __sub__(self, other):
-#        return self.qty - other.qty
-#
-#    def __mul__(self, other):
-#        return int(self.qty * other.qty)
-#
-#    def __truediv__(self, other):
-#        return round(self.qty // other.qty)
-#
-#    def make_order(self, cell_row):
-#        row = ''
-#        for i in range(int(self.qty / cell_row)):
-#            row += f'{"*" * cell_row}\n'
-#        row += f'{"*" * (self.qty % cell_row)}'
-#        return row
+class Cell:
+    def __init__(self, quantity):
+        self.quantity = int(quantity)
 
-#cell_1 = Cell(2)
-#cell_2 = Cell(8)
-#print(cell_1)
+    def __str__(self):
+        return self.quantity * "*"
+
+    def __add__(self, other):
+        return Cell(self.quantity + other.quantity)
+
+    def __sub__(self, other):
+        return self.quantity - other.quantity if (self.quantity - other.quantity) > 0 else print('меньше ноля')
+
+    def __mul__(self, other):
+        return Cell(int(self.quantity * other.quantity))
+
+    def __truediv__(self, other):
+        return Cell(round(self.quantity // other.quantity))
+
+    def make_order(self, cells_in_row):
+        row = ''
+        for i in range(int(self.quantity / cells_in_row)):
+            row += f'{"*" * cells_in_row} \n'
+        row += f'{"*" * (self.quantity % cells_in_row)}'
+        return row
+
+cell1 = Cell(40)
+cell2 = Cell(2)
+print(f'3.\n{cell1}\n{cell1 + cell2}')
+print(cell2 - cell1)
+print(cell2.make_order(5))
+print(cell1 / cell2)
